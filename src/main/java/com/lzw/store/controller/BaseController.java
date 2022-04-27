@@ -1,7 +1,9 @@
 package com.lzw.store.controller;
 
 import com.lzw.store.service.ex.InsertException;
+import com.lzw.store.service.ex.PasswordNotMatchException;
 import com.lzw.store.service.ex.ServiceException;
+import com.lzw.store.service.ex.UserNotFoundException;
 import com.lzw.store.service.ex.UsernameDuplitedException;
 import com.lzw.store.util.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,9 +28,15 @@ public class BaseController {
         if (e instanceof UsernameDuplitedException) {
             result.setState(4000);
             result.setMessage("用户名已经被占用");
+        } else if (e instanceof UserNotFoundException) {
+            result.setState(5001);
+            result.setMessage("用户数据不存在的异常");
+        } else if (e instanceof PasswordNotMatchException) {
+            result.setState(5002);
+            result.setMessage("用户名的密码错误的异常");
         } else if (e instanceof InsertException) {
             result.setState(5000);
-            result.setMessage("注册时产生未知的异常");
+            result.setMessage("插入数据时产生未知的异常");
         }
         return result;
     }

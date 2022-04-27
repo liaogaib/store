@@ -40,11 +40,40 @@ public class UserController extends BaseController {
         }
         return result;
     }*/
+    /**
+     * 1.接受数据方式：请求处理方法的参数列表设置为pojo类型来接收前端的数据，
+     *  SpringBoot会将前端的url地址中的参数名和pojo类的属性名进行比较，如
+     *  果这两个名称相同，则将值注入到pojo中对应的属性上
+     */
+
+    /**
+     *
+     * @param user
+     * @return
+     */
 
     @RequestMapping("reg")
     //@ResponseBody //表示此方法的响应结果以json格式进行数据的响应给到前端
     public JsonResult<Void> reg(User user){
         userService.reg(user);
         return new JsonResult<>(OK);
+    }
+
+    /**
+     * 约定大雨配置：开发思想来完成，省略大量的配置甚至注解的编写
+     * 2.接受数据方式：请求处理方法的参数列表设置为非pojo类型
+     *  SpringBoot会直接将请求的参数名和方法的参数名直接进行比较。如果名称
+     *  相同则自动完成值的依赖注入
+     */
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    @RequestMapping("login")
+    public JsonResult<User> login(String username, String password){
+        User data = userService.login(username, password);
+        return new JsonResult<User>(OK,data);
     }
 }
